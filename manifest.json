@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Selected Text Display",
+  "version": "1.0",
+  "permissions": ["tabs", "scripting", "activeTab", "storage", "offscreen"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "main.html"
+  },
+  "host_permissions": ["<all_urls>"]
+}

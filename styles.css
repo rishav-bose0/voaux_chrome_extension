@@ -1,0 +1,189 @@
+#container {
+    background-color: white;
+}
+
+.aiVoiceBlock {
+    width: 405px;
+    height: 110px;
+    border-bottom: 1px solid black;
+    /*border: 1px solid #ccc;*/
+    /*border-radius: 30px;*/
+    margin: 3px;
+    padding: 7px;
+    align-content: center;
+    /*cursor: pointer;*/
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    /*justify-content: center;*/
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    background-color: white;
+}
+
+/*.playButton {*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    left: 50%;*/
+/*    transform: translate(-50%, -50%);*/
+/*    display: none; !* Hide the play button by default *!*/
+/*    cursor: pointer;*/
+/*    background: none; !* Remove background *!*/
+/*    border: none;*/
+/*}*/
+
+/*!* Show the play button on hover over the voice block *!*/
+.aiVoiceBlock:hover {
+    background-color: lightgray;
+}
+
+.aiVoiceBlock:hover .Button2 {
+    display: block;
+    background-color: lightgray;
+    /*background: none;*/
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 57%;
+    right: 12%;
+}
+
+.voiceBlock {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 67%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    justify-content: right;
+    align-items: end;
+    text-align: center;
+    gap: 10px;
+}
+
+
+.Button {
+    width: 100px;
+    height: 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    /*position: relative;*/
+}
+
+.Button2 {
+    /*background-color: none;*/
+    display: none;
+
+}
+
+/*.Button2:hover {*/
+/*    background-color: lightgray;*/
+/*}*/
+
+.Button:active {
+    transform: translateY(2px); /* Move the button down slightly */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a shadow */
+}
+
+#fixedAudioBlock {
+    position: sticky;
+    bottom: 0px; /* Adjust the position as needed */
+    background-color: white; /* Set a background color for visibility */
+    z-index: 1; /* Ensure it's above the other content */
+    /*width: 410px;*/
+    /*align-content: center;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+audio::-webkit-media-controls-mute-button {
+    display: none;
+}
+
+/*.tts {*/
+/*    display: none;*/
+/*}*/
+/*.Button:active {*/
+/*    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);*/
+/*}*/
+
+
+audio {
+    width: 100%; /* Set the width as needed */
+    background-color: #f4f4f4; /* Set a background color */
+    border-radius: 5px; /* Add rounded corners */
+    padding: 10px; /* Add some padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow */
+    outline: none; /* Remove the default focus outline */
+}
+
+.aiVoiceBlock.highlighted {
+    background-color: orangered; /* Change to your desired highlight color */
+}
+
+.aiVoiceBlock.highlighted .Button2{
+    background-color: orangered; /* Change to your desired highlight color */
+}
+
+/*!* Style the controls *!*/
+/*audio::-webkit-media-controls-panel {*/
+/*    background-color: transparent; !* Set controls background color *!*/
+/*    color: #333; !* Set controls color *!*/
+/*    border-radius: 5px; !* Add rounded corners to controls *!*/
+/*}*/
+
+/*.range {*/
+/*    !*position: absolute;*!*/
+/*    height: 170px;*/
+/*}*/
+
+/*.range input{*/
+/*    !*margin-top:10%;*!*/
+/*    !*-webkit-transform:rotate(90deg);*!*/
+/*    !*-moz-transform:rotate(90deg);*!*/
+/*    !*-o-transform:rotate(90deg);*!*/
+/*    transform:rotate(270deg);*/
+/*    width: 30%;*/
+/*    height: 10%;*/
+/*    position: absolute;*/
+/*    top: 43%;*/
+/*    right: -30px;*/
+
+/*    !*margin-bottom: 40%;*!*/
+/*    !*display: flex;*!*/
+/*    !*flex-direction: row;*!*/
+/*    !*gap: -12px;*!*/
+/*}*/
+
+/*.range p{*/
+/*    transform:rotate(270deg);*/
+/*    position: absolute;*/
+/*    top: 35%;*/
+/*    right: 1%;*/
+/*    display: block;*/
+/*}*/
+
+.range {
+    transform:rotate(270deg);
+    width: 35%;
+    height: 10%;
+    position: absolute;
+    top: 43%;
+    right: -20px;
+}
+
+.range input {
+    height: 15px;
+    width: 80px;
+    /*right: -80px;*/
+}
+
+.circular-image {
+    border-radius: 50%;
+    overflow: hidden;
+}
