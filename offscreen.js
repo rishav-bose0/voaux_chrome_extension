@@ -88,7 +88,7 @@ function resume(startTime) {
         return;
     }
     let timeDiff = Math.floor(Math.abs(audioElement.currentTime - startTime))
-    if (timeDiff > 1) {
+    if (timeDiff > 1 || audioElement.duration < 3) {
         console.log(timeDiff);
         audioElement.currentTime = startTime;
         audioElement.play();

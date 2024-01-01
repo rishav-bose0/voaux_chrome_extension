@@ -140,9 +140,11 @@ export function playNextAudio(audioUrl, startTime = undefined) {
 
 
     audioElement.addEventListener('ratechange', () => {
-        const currentSpeed = audioElement.playbackRate;
-        playbackRate = currentSpeed;
-        chrome.runtime.sendMessage({dest: 'toOffscreen', action: 'speedChanged', speedRate: currentSpeed});
+        if (!isPaused) {
+            const currentSpeed = audioElement.playbackRate;
+            playbackRate = currentSpeed;
+            chrome.runtime.sendMessage({dest: 'toOffscreen', action: 'speedChanged', speedRate: currentSpeed});
+        }
     });
 }
 

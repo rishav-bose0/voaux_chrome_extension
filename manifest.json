@@ -10,5 +10,5 @@
   "action": {
     "default_popup": "main.html"
   },
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["http://*/*", "https://*/*"]
 }
