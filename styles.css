@@ -1,37 +1,24 @@
 #container {
     background-color: white;
+    /*border-radius: 15px; !* Adjust the value to control the roundness of the corners *!*/
+    /*overflow: hidden;*/
 }
 
 .aiVoiceBlock {
     width: 405px;
     height: 110px;
     border-bottom: 1px solid black;
-    /*border: 1px solid #ccc;*/
-    /*border-radius: 30px;*/
     margin: 3px;
-    padding: 7px;
+    padding: 5px;
     align-content: center;
-    /*cursor: pointer;*/
     display: flex;
     position: relative;
     flex-direction: row;
-    /*justify-content: center;*/
     align-items: center;
     text-align: center;
     gap: 10px;
     background-color: white;
 }
-
-/*.playButton {*/
-/*    position: absolute;*/
-/*    top: 50%;*/
-/*    left: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    display: none; !* Hide the play button by default *!*/
-/*    cursor: pointer;*/
-/*    background: none; !* Remove background *!*/
-/*    border: none;*/
-/*}*/
 
 /*!* Show the play button on hover over the voice block *!*/
 .aiVoiceBlock:hover {
@@ -73,14 +60,9 @@
 }
 
 .Button2 {
-    /*background-color: none;*/
     display: none;
 
 }
-
-/*.Button2:hover {*/
-/*    background-color: lightgray;*/
-/*}*/
 
 .Button:active {
     transform: translateY(2px); /* Move the button down slightly */
@@ -92,26 +74,18 @@
     bottom: 0px; /* Adjust the position as needed */
     background-color: white; /* Set a background color for visibility */
     z-index: 1; /* Ensure it's above the other content */
-    /*width: 410px;*/
-    /*align-content: center;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 audio::-webkit-media-controls-mute-button {
-    display: none;
+    display: none !important;
 }
 
-/*.tts {*/
-/*    display: none;*/
-/*}*/
-/*.Button:active {*/
-/*    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);*/
-/*}*/
-
+audio::-webkit-media-controls-volume-slider {
+    display: none !important;
+}
 
 audio {
     width: 100%; /* Set the width as needed */
@@ -130,44 +104,6 @@ audio {
     background-color: orangered; /* Change to your desired highlight color */
 }
 
-/*!* Style the controls *!*/
-/*audio::-webkit-media-controls-panel {*/
-/*    background-color: transparent; !* Set controls background color *!*/
-/*    color: #333; !* Set controls color *!*/
-/*    border-radius: 5px; !* Add rounded corners to controls *!*/
-/*}*/
-
-/*.range {*/
-/*    !*position: absolute;*!*/
-/*    height: 170px;*/
-/*}*/
-
-/*.range input{*/
-/*    !*margin-top:10%;*!*/
-/*    !*-webkit-transform:rotate(90deg);*!*/
-/*    !*-moz-transform:rotate(90deg);*!*/
-/*    !*-o-transform:rotate(90deg);*!*/
-/*    transform:rotate(270deg);*/
-/*    width: 30%;*/
-/*    height: 10%;*/
-/*    position: absolute;*/
-/*    top: 43%;*/
-/*    right: -30px;*/
-
-/*    !*margin-bottom: 40%;*!*/
-/*    !*display: flex;*!*/
-/*    !*flex-direction: row;*!*/
-/*    !*gap: -12px;*!*/
-/*}*/
-
-/*.range p{*/
-/*    transform:rotate(270deg);*/
-/*    position: absolute;*/
-/*    top: 35%;*/
-/*    right: 1%;*/
-/*    display: block;*/
-/*}*/
-
 .range {
     transform:rotate(270deg);
     width: 35%;
@@ -180,10 +116,16 @@ audio {
 .range input {
     height: 15px;
     width: 80px;
-    /*right: -80px;*/
 }
 
 .circular-image {
     border-radius: 50%;
     overflow: hidden;
+}
+
+.headImages {
+    display: flex;
+    flex-direction: row;
+    gap: 35px;
+    border-bottom: 2px solid black;
 }

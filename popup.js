@@ -4,7 +4,7 @@ function onError(error) {
 
 let isPaused = false;
 let playbackRate;
-chrome.storage.local.get(['playbackRate'], function(result) {
+chrome.storage.local.get(['playbackRate'], function (result) {
     playbackRate = result.playbackRate;
 });
 
@@ -35,12 +35,10 @@ function getReqLoadBasedOnText(text, speakerId, speechSpeed) {
 
 function createTTSPayload(textReq, speakerId, speechSpeed) {
     return {
-        project_id: 'NAzyQvYalZ0AgW',
         text: textReq.toString(),
         language: 'en',
         speaker_id: speakerId,
         duration: speechSpeed,
-        block_number: 0,
         pitch: 0,
     };
 }
@@ -60,7 +58,7 @@ function sanitizeText(text) {
 async function processTTSApi(selectedText, speakerId, speechSpeed) {
     const selectedTextElement = document.getElementById('fixedAudioBlock');
     console.log(selectedTextElement)
-    selectedTextElement.innerHTML = 'Please donot close the pop till loading is complete!';
+    selectedTextElement.innerHTML = '<p style="font-weight: bold;font-size: 13px">Please do not close the extension untill loading is complete!</p>';
     // selectedTextElement.textContent = selectedText;
     const loadingIndicator = document.createElement('img');
     loadingIndicator.src = 'img_files/Loader.svg'; // Replace with your loading GIF URL
@@ -88,16 +86,15 @@ export function playNextAudio(audioUrl, startTime = undefined) {
     audioElement.volume = 0;
     audioElement.controlsList = "nodownload novolume";
     audioElement.autoplay = true;
-    if(startTime !== undefined){
+    if (startTime !== undefined) {
         audioElement.currentTime = startTime;
     }
-    if(playbackRate !== undefined){
+    if (playbackRate !== undefined) {
         console.log("playback added " + playbackRate);
         audioElement.playbackRate = playbackRate;
     } else {
-        chrome.storage.local.get(['playbackRate'], function(result) {
-            if(result.playbackRate !== undefined){
-                console.log("playback added" + playbackRate);
+        chrome.storage.local.get(['playbackRate'], function (result) {
+            if (result.playbackRate !== undefined) {
                 playbackRate = result.playbackRate;
             }
         });
@@ -117,34 +114,28 @@ export function playNextAudio(audioUrl, startTime = undefined) {
             });
             chrome.storage.local.set({'prevTime': audioElement.currentTime});
         }
-        // chrome.runtime.sendMessage({action: 'popup_paused' });
-
     });
 
     audioElement.addEventListener('play', () => {
 
-        // const currentTime = audioElement.currentTime;
         isPaused = false;
-        chrome.runtime.sendMessage({
-            dest: 'toOffscreen', action: 'play', currentTime: audioElement.currentTime,
-            duration: audioElement.duration
-        });
-        // chrome.runtime.sendMessage({ action: 'audioPlayed', startTime: currentTime });
+        // chrome.runtime.sendMessage({
+        //     dest: 'toOffscreen', action: 'play', currentTime: audioElement.currentTime,
+        //     duration: audioElement.duration
+        // });
     });
 
     // chrome.storage.local.set({ 'prevSource': audioUrl });
     audioElement.addEventListener('input', () => {
-        if(!isPaused){
+        if (!isPaused) {
             chrome.runtime.sendMessage({dest: 'toOffscreen', action: 'resume', startTime: audioElement.currentTime});
         }
-        // chrome.storage.local.set({'prevTime': audioElement.currentTime});
     });
 
     audioElement.addEventListener('timeupdate', () => {
-        if(!isPaused){
+        if (!isPaused) {
             chrome.runtime.sendMessage({dest: 'toOffscreen', action: 'resume', startTime: audioElement.currentTime});
         }
-        // chrome.storage.local.set({'prevTime': audioElement.currentTime});
     });
 
 
@@ -179,9 +170,23 @@ chrome.runtime.onMessage.addListener((message) => {
             console.log(message);
             playNextAudio(message.audioUrlUpdate);
         }
-        if (message.newTTS){
+        if (message.newTTS) {
             const selectedTextElement = document.getElementById('fixedAudioBlock');
             selectedTextElement.innerHTML = '';
+        }
+        if (message.error) {
+            const selectedTextElement = document.getElementById('fixedAudioBlock');
+            selectedTextElement.innerHTML = `
+<p> Received error 
+        <span style="margin-right: 5px;"></span> <!-- Adding space -->
+        <p style="color: red; font-weight: bold; display: inline;"> code ${message.error} </p>
+        <span style="margin-left: 5px;"></span> <!-- Adding space -->
+        <span>from server.</span>
+    </p>
+`;
+            selectedTextElement.style.height = '70px';
+            selectedTextElement.style.fontSize = '15px';
+
         }
     }
 });
