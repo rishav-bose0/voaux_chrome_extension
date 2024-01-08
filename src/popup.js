@@ -4,9 +4,9 @@ function onError(error) {
 
 let isPaused = false;
 let playbackRate;
-chrome.storage.local.get(['playbackRate'], function (result) {
-    playbackRate = result.playbackRate;
-});
+// chrome.storage.local.get(['playbackRate'], function (result) {
+//     playbackRate = result.playbackRate;
+// });
 
 function getReqLoadBasedOnText(text, speakerId, speechSpeed) {
 
@@ -57,7 +57,7 @@ function sanitizeText(text) {
 
 async function processTTSApi(selectedText, speakerId, speechSpeed) {
     const selectedTextElement = document.getElementById('fixedAudioBlock');
-    console.log(selectedTextElement)
+    // console.log(selectedTextElement)
     selectedTextElement.innerHTML = '<p style="font-weight: bold;font-size: 13px">Please do not close the extension untill loading is complete!</p>';
     // selectedTextElement.textContent = selectedText;
     const loadingIndicator = document.createElement('img');
@@ -77,7 +77,7 @@ async function processTTSApi(selectedText, speakerId, speechSpeed) {
 export function playNextAudio(audioUrl, startTime = undefined) {
     const selectedTextElement = document.getElementById('fixedAudioBlock');
     selectedTextElement.innerHTML = '';
-    console.log("Audio url is " + audioUrl);
+    // console.log("Audio url is " + audioUrl);
 
     const audioElement = document.createElement('audio');
     audioElement.src = audioUrl;
@@ -89,16 +89,14 @@ export function playNextAudio(audioUrl, startTime = undefined) {
     if (startTime !== undefined) {
         audioElement.currentTime = startTime;
     }
-    if (playbackRate !== undefined) {
-        console.log("playback added " + playbackRate);
-        audioElement.playbackRate = playbackRate;
-    } else {
-        chrome.storage.local.get(['playbackRate'], function (result) {
-            if (result.playbackRate !== undefined) {
-                playbackRate = result.playbackRate;
-            }
-        });
-    }
+
+    chrome.storage.local.get(['speedRate'], function (result) {
+        if (result.speedRate !== undefined) {
+            playbackRate = result.speedRate;
+            audioElement.playbackRate = playbackRate;
+        }
+    });
+
     selectedTextElement.appendChild(audioElement);
 
 
@@ -112,17 +110,17 @@ export function playNextAudio(audioUrl, startTime = undefined) {
                 currentTime: audioElement.currentTime,
                 duration: audioElement.duration
             });
-            chrome.storage.local.set({'prevTime': audioElement.currentTime});
+            // chrome.storage.local.set({'prevTime': audioElement.currentTime});
         }
+    });
+
+    audioElement.addEventListener('ended', () => {
+        isPaused = true;
     });
 
     audioElement.addEventListener('play', () => {
 
         isPaused = false;
-        // chrome.runtime.sendMessage({
-        //     dest: 'toOffscreen', action: 'play', currentTime: audioElement.currentTime,
-        //     duration: audioElement.duration
-        // });
     });
 
     // chrome.storage.local.set({ 'prevSource': audioUrl });
@@ -168,8 +166,8 @@ export function handleTextSelection(speakerId, speechSpeed) {
 chrome.runtime.onMessage.addListener((message) => {
     if (message.dest === "toMain") {
         if (message.audioUrlUpdate) {
-            console.log("Received message in popup");
-            console.log(message);
+            // console.log("Received message in popup");
+            // console.log(message);
             playNextAudio(message.audioUrlUpdate);
         }
         if (message.newTTS) {
