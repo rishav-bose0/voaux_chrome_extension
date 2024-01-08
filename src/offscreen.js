@@ -4,13 +4,16 @@ let playbackRate;
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.dest === "toOffscreen") {
-        if (msg.loadResult) sendResponse(true);
+        if (msg.loadResult) {
+            let playDetails = getDetails()
+            sendResponse({audioUrl: playDetails[0], currentTime: playDetails[1]});
+        }
         if (msg.action === 'resume') resume(msg.startTime);
         if (msg.action === 'pause') pauseAudio();
         if (msg.clearAudioQueue) clearQueue();
         if (msg.action === 'speedChanged') speedChanged(msg.speedRate);
         if (msg.action === 'end') {
-            console.log("Received end message");
+            // console.log("Received end message");
         }
         if (msg.audioUrl) {
             console.log("Received message to push url " + msg.audioUrl);
@@ -29,22 +32,23 @@ function clearQueue() {
     isPlaying = false;
     playbackRate = undefined;
     audioQueue = [];
+    chrome.runtime.sendMessage({action: 'playbackSpeed', speedRate: 1});
 }
 
 function playNextAudio() {
     if (!isPlaying && audioQueue.length > 0) {
         const audioUrl = audioQueue.shift();
+        console.log("playing  " + audioUrl);
         isPlaying = true;
         playAudio(audioUrl, 0);
-        chrome.runtime.sendMessage({action: 'urlUpdate', audioUrl: audioUrl});
+        chrome.runtime.sendMessage({action: 'urlUpdate', audioUrl: audioUrl, currentTime: 0});
     }
 }
 
 // Play sound with access to DOM APIs
 function playAudio(source, startTime) {
-    console.log("Playing " + source);
+    // console.log("Playing " + source);
     const fixedAudioBlock = document.getElementById('OffscreenAudioBlock');
-    console.log(fixedAudioBlock);
     fixedAudioBlock.innerHTML = '';
     const audioElement = document.createElement('audio');
     audioElement.src = source;
@@ -55,9 +59,9 @@ function playAudio(source, startTime) {
         audioElement.playbackRate = playbackRate;
     }
 
-    audioElement.addEventListener('timeupdate', () => {
-        chrome.runtime.sendMessage({action: 'timeUpdate', currentTime: audioElement.currentTime});
-    });
+    // audioElement.addEventListener('timeupdate', () => {
+    //     chrome.runtime.sendMessage({action: 'timeUpdate', currentTime: audioElement.currentTime});
+    // });
     audioElement.addEventListener('ended', () => {
         chrome.runtime.sendMessage({action: 'end'});
         isPlaying = false;
@@ -88,9 +92,14 @@ function resume(startTime) {
         return;
     }
     let timeDiff = Math.floor(Math.abs(audioElement.currentTime - startTime))
-    if (timeDiff > 1 || audioElement.duration < 3) {
-        console.log(timeDiff);
+    if (timeDiff >= 1) {
+        // console.log(timeDiff);
         audioElement.currentTime = startTime;
         audioElement.play();
     }
+}
+
+function getDetails() {
+    const audioElement = document.querySelector('audio');
+    return [audioElement.src, audioElement.currentTime];
 }
