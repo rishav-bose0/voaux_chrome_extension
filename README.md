@@ -1,1 +1,2 @@
-This project contains building webchrome extension for my voaux tts.
+This is code written for my chrome extension. It's a read aloud extension. Users select the paragraph that they want to read aloud. Its powered through voaux (which is my own tts). There are lot of voices to choose from. Currently works only for english language and for websites. (Support for PDF and google docs will come soon).
+![promo4](https://github.com/rishav-bose0/voaux_chrome_extension/assets/79586890/313c2324-bd93-4c3a-ba5e-981046a7c721)
